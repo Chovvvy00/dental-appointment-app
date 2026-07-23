@@ -2,13 +2,13 @@ import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import { appointments } from './schema';
 import { eq, and, gte, lte, sql, inArray, or, lt } from 'drizzle-orm';
-// import { DATABASE_URL } from '$env/static/private';
+import { DATABASE_URL } from '$env/static/private';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 dayjs.extend(customParseFormat);
 
-const connectionString = 'postgresql://postgres.pczatzjxiesriccwliwi:SomethingWentWrong000@aws-1-ap-northeast-2.pooler.supabase.com:6543/postgres';
+const connectionString = DATABASE_URL;
 
 const client = postgres(connectionString, { prepare: false });
 export const db = drizzle(client, { schema: { appointments } });
