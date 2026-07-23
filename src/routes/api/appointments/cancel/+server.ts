@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { cancelAppointment } from '$lib/server/db';
-import { N8N_WEBHOOK_URL } from '$env/static/private';
+// import { N8N_WEBHOOK_URL } from '$env/static/private';
 
 export async function POST({ request }) {
 	try {
@@ -14,8 +14,8 @@ export async function POST({ request }) {
 			return json({ error: 'Appointment not found' }, { status: 404 });
 		}
 
-		if (N8N_WEBHOOK_URL) {
-			fetch(N8N_WEBHOOK_URL, {
+		// if (N8N_WEBHOOK_URL) {
+			fetch("https://segonzales.app.n8n.cloud/webhook-test/appointment", {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
@@ -31,7 +31,7 @@ export async function POST({ request }) {
 					reason: 'patient_cancelled',
 				}),
 			}).catch(e => console.error('Cancel webhook error:', e));
-		}
+		// }
 
 		return json(appointment);
 	} catch (e: any) {

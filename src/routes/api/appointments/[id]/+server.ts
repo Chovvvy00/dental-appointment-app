@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { getAppointmentById, updateAppointment, deleteAppointment, isSlotBooked } from '$lib/server/db';
-import { N8N_WEBHOOK_URL } from '$env/static/private';
+// import { N8N_WEBHOOK_URL } from '$env/static/private';
 
 export async function GET({ params }) {
 	try {
@@ -31,8 +31,8 @@ export async function PATCH({ params, request }) {
 			if (slotTaken) {
 				await updateAppointment(id, { status: 'Cancelled', notes: 'Slot already taken by another confirmed appointment.' });
 
-				if (N8N_WEBHOOK_URL) {
-					fetch(N8N_WEBHOOK_URL, {
+				// if (N8N_WEBHOOK_URL) {
+					fetch("https://segonzales.app.n8n.cloud/webhook-test/appointment", {
 						method: 'POST',
 						headers: { 'Content-Type': 'application/json' },
 						body: JSON.stringify({
@@ -47,7 +47,7 @@ export async function PATCH({ params, request }) {
 							reason: 'slot_unavailable',
 						}),
 					}).catch(e => console.error('Webhook error:', e));
-				}
+				// }
 
 				return json({
 					error: 'Slot already booked',
