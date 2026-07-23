@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: svelte-appointment-app
+    env: node
+    buildCommand: pnpm install --frozen-lockfile; pnpm run build
+    startCommand: node build/index.js
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: PUBLIC_SUPABASE_URL
+        sync: false
+      - key: PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+      - key: N8N_WEBHOOK_URL
+        sync: false
