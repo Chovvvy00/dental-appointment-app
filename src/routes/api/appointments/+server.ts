@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { createAppointment, getAppointments, getActiveAppointmentByEmail, isSlotBooked } from '$lib/server/db';
-// import { N8N_WEBHOOK_URL } from '$env/static/private';
+import { N8N_WEBHOOK_URL } from '$env/static/private';
 
 export async function GET() {
 	try {
@@ -47,9 +47,9 @@ export async function POST({ request }) {
 		});
 
 		// Fire webhook synchronously so n8n gets the id before the response
-		// if (N8N_WEBHOOK_URL) {
+		if (N8N_WEBHOOK_URL) {
 			try {
-				await fetch("https://segonzales.app.n8n.cloud/webhook-test/appointment", {
+				await fetch(N8N_WEBHOOK_URL, {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({
@@ -67,7 +67,7 @@ export async function POST({ request }) {
 			} catch (e) {
 				console.error('Webhook error:', e);
 			}
-		// }
+		}
 
 		return json(appointment, { status: 201 });
 	} catch (e: any) {
